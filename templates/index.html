@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container-fluid">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{% url "system:index" %}">Каталог</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if not category.slug %} active {% endif %}">
+        <a class="nav-link" href="{% url "system:index" %}">Все товары </a>
+      </li>
+      {% for category in categories %}
+      <li class="nav-item dropdown {% if request.path == category.get_absolute_url %} active {% endif %}">
+        <a class="nav-link dropdown-toggle" href="{% url "system:product_list_by_category" category.slug %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ category.name }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url "system:product_list_by_category" category.slug %}">Все</a>
+          <div class="dropdown-divider"></div>
+          {% for subcategory in category.sub_items.all %}
+          <a class="dropdown-item" href="{% url "system:product_list_by_subcategory" category.slug subcategory.slug %}">{{ subcategory.name }}</a>
+          {% endfor %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="{% url 'system:global_search' %}" method="get">
+      <input class="form-control mr-sm-2" type="search" placeholder="Название товара" aria-label="Search" name="text">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+    </form>
+  </div>
+</nav>
+      <div class="row mt-2 pb-5 justify-content-center">
+        {% for product in products %}
+        <div class="card bg-light pt-3 ">
+          <img src="{{ product.image.url }}" class=" d-flex align-self-center card-img-top rounded-lg" style="height:250px;width:250px;" alt="{{ product.name }}">
+          <div class="card-body pt-2">
+            <h3 class="mb-3 text-center">{{ product.name }}</h3>
+            <h6>Порция: </h6>
+            <p class="card-text">{{ product.size }}
+            </p>
+            <h6>Ингредиенты: </h6>
+            <p class="card-text">{{ product.description }}
+            </p>
+            <h6>Цена:</h6>
+            <p class="card-text">
+              {{ product.price }} ₽
+            </p>
+            <h6>Категория: </h6>
+            <p class="card-text"><a href="{% url "system:product_list_by_category" product.category.slug %}"><span class="badge badge-pill badge-secondary" style="background:{{ product.category.color }};">{{ product.category }}</span></a>
+            </p>
+            <h6>Подкатегория: </h6>
+            <p class="card-text"><a href="{% url "system:product_list_by_subcategory" product.category.slug product.subcategory.slug %}"><span class="badge badge-pill badge-secondary"  style="background:{{ product.subcategory.color }};">{{ product.subcategory }}</span></a>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+        {% for product in search_results %}
+        <div class="card bg-light pt-3 ">
+          <img src="{{ product.image.url }}" class=" d-flex align-self-center card-img-top rounded-lg" style="height:250px;width:250px;" alt="{{ product.name }}">
+          <div class="card-body pt-2">
+            <h3 class="mb-3 text-center">{{ product.name }}</h3>
+            <h6>Порция: </h6>
+            <p class="card-text">{{ product.size }}
+            </p>
+            <h6>Ингредиенты: </h6>
+            <p class="card-text">{{ product.description }}
+            </p>
+            <h6>Цена:</h6>
+            <p class="card-text">
+              {{ product.price }} ₽
+            </p>
+            <h6>Категория: </h6>
+            <p class="card-text"><a href="{% url "system:product_list_by_category" product.category.slug %}"><span class="badge badge-pill badge-secondary" style="background:{{ product.category.color }};">{{ product.category }}</span></a>
+            </p>
+            <h6>Подкатегория: </h6>
+            <p class="card-text"><a href="{% url "system:product_list_by_subcategory" product.category.slug product.subcategory.slug %}"><span class="badge badge-pill badge-secondary"  style="background:{{ product.subcategory.color }};">{{ product.subcategory }}</span></a>
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  </div>
+{% endblock %}
