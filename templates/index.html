@@ -33,7 +33,6 @@
 </nav>
       <div class="row mt-2 pb-5 justify-content-center">
 
-<img src="{% static '/img/1.jpg' %}">
         {% for product in products %}
         <div class="card bg-light pt-3 ">
           <img src="{{ product.image.url }}" class=" d-flex align-self-center card-img-top rounded-lg" style="height:250px;width:250px;" alt="{{ product.name }}">
