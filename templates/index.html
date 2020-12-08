@@ -37,20 +37,10 @@
   </div>
 </nav>
   {% if query %}
-  <div class="row">
-          <div class="card">
-            <div class="card-header">
-              Результаты поиска по запросу "{{ query }}"
-            </div>
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-                <p>{{ search_results|length|rupluralize:"Найден,найдено,найдено" }} {{ search_results|length }} {{ search_results|length|rupluralize:"товар,товара,товаров" }}</p>
-              </blockquote>
-            </div>
-          </div>
-  </div>
+    <div class="alert alert-info mt-2" role="alert">
+    {{ search_results|length|rupluralize:"Найден,Найдено,Найдено" }} {{ search_results|length }} {{ search_results|length|rupluralize:"товар,товара,товаров" }}
+    </div>
   {% endif %}
-
       <div class="row mt-2 pb-5 justify-content-center">
 
         {% for product in products %}
