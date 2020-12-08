@@ -4,6 +4,8 @@ from django.db.models import Q
 
 
 def index(request):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
     categories = Category.objects.all()
     products = Product.objects.all().order_by('-created')
     context = {'products': products, 'categories': categories}
@@ -12,6 +14,8 @@ def index(request):
 
 
 def global_search(request):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
     categories = Category.objects.all()
     query = request.GET.get('text')
     search_results = Product.objects.filter(Q(name__icontains=query)).order_by('-created')
@@ -21,6 +25,8 @@ def global_search(request):
 
 
 def product_list_by_category(request, category_slug=None):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
     category = None
     categories = Category.objects.all()
     products = Product.objects.all().order_by('-created')
@@ -33,6 +39,8 @@ def product_list_by_category(request, category_slug=None):
 
 
 def product_list_by_subcategory(request, category_slug=None, subcategory_slug=None):
+    if not request.user.is_authenticated:
+        return render(request, 'login.html')
     category = None
     subcategory = None
     categories = Category.objects.all()
@@ -41,7 +49,6 @@ def product_list_by_subcategory(request, category_slug=None, subcategory_slug=No
         category = get_object_or_404(Category, slug=category_slug)
         subcategory = get_object_or_404(Subcategory, slug=subcategory_slug)
         products = products.filter(category=category, subcategory=subcategory).order_by('-created')
-
     template = 'index.html'
     context = {'category': category, 'categories': categories, 'products': products,}
     return render(request, template, context)
