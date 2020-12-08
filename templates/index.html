@@ -38,7 +38,7 @@
 </nav>
   {% if query %}
     <div class="alert alert-info mt-2" role="alert">
-    {{ search_results|length|rupluralize:"Найден,Найдено,Найдено" }} {{ search_results|length }} {{ search_results|length|rupluralize:"товар,товара,товаров" }}
+    {{ search_results|length|rupluralize:"Найден,Найдено,Найдено" }} {{ search_results|length }} {{ search_results|length|rupluralize:"товар,товара,товаров" }} по запросу "{{ query }}"
     </div>
   {% endif %}
       <div class="row mt-2 pb-5 justify-content-center">
