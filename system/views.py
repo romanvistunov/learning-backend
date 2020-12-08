@@ -15,7 +15,7 @@ def global_search(request):
     categories = Category.objects.all()
     query = request.GET.get('text')
     search_results = Product.objects.filter(Q(name__icontains=query))
-    context = {'search_results':search_results, 'categories': categories}
+    context = {'search_results':search_results, 'categories': categories, 'query': query}
     template = 'index.html'
     return render(request, template, context)
 

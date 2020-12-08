@@ -1,4 +1,9 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% block title %}Каталог товаров{% if category %}: {{ category.name }}{% endif %}{% if search_results %}: Результаты поиска{% endif %}
+{% endblock %}
+{% load static %}
+{% load rupluralize %}
+{% block content %}
 <div class="container-fluid">
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url "system:index" %}">Каталог</a>
@@ -31,6 +36,21 @@
     </form>
   </div>
 </nav>
+  {% if query %}
+  <div class="row">
+          <div class="card">
+            <div class="card-header">
+              Результаты поиска по запросу "{{ query }}"
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>{{ search_results|length|rupluralize:"Найден,найдено,найдено" }} {{ search_results|length }} {{ search_results|length|rupluralize:"товар,товара,товаров" }}</p>
+              </blockquote>
+            </div>
+          </div>
+  </div>
+  {% endif %}
+
       <div class="row mt-2 pb-5 justify-content-center">
 
         {% for product in products %}
@@ -81,6 +101,7 @@
           </div>
         </div>
         {% endfor %}
+
       </div>
   </div>
 {% endblock %}
